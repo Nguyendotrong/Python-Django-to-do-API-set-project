@@ -12,10 +12,11 @@ class Task(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     user = models.ForeignKey(User, related_name='tasks', on_delete=models.CASCADE)
-    date_of_completion = models.DateTimeField()
     status = models.PositiveSmallIntegerField(choices=STATUS, default=NEW)
     date_of_creation = models.DateTimeField(auto_now_add=True)
     date_of_modification = models.DateTimeField(auto_now=True)
+    date_of_completion = models.DateTimeField()
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         constraints = [
@@ -24,3 +25,4 @@ class Task(models.Model):
                 name="mycustomconstraint_checktime1"
             )
         ]
+
