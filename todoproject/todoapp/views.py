@@ -1,19 +1,16 @@
 from django.contrib.auth.models import User
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.views import View
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
+from rest_framework import viewsets, permissions, status, generics
+from rest_framework.decorators import  action
+from django.db import IntegrityError
 
 from .models import Task
 from .paginator import BasePagination
 from .serializers import TaskSerializer, UserSerializer, TaskDetailSerializer, TaskCreateSerializer
-# Create your views here.
-from rest_framework import viewsets, permissions, status, generics
-from rest_framework.views import APIView
-from rest_framework.decorators import api_view, action
-from django.views.generic.edit import CreateView
+
+
 
 class UserViewSet(viewsets.ViewSet, generics.ListAPIView,):
     serializer_class = UserSerializer
@@ -59,9 +56,32 @@ class TaskViewSet(viewsets.ViewSet, generics.UpdateAPIView,
         return TaskCreateSerializer
 
     def create(self, request, *args, **kwargs):
-        if int(request.data.get('user')) == request.user.pk:
-            raise PermissionDenied()
-        return super().create(request,args,kwargs)
+
+        try:
+            if int(request.data.get('user')) == request.user.pk:
+                raise PermissionDenied()
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            # try catch để bắt lỗi nếu nhập ngày hoàn thành task..
+            # ..nhỏ hơn ngày tạo task sẽ xuất error của contrain bên model
+
+        except IntegrityError:
+            raise ValidationError(detail='completion date must not be less than creation date')
+        except :
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+        def perform_create(self, serializer):
+            serializer.save()
+
+        def get_success_headers(self, data):
+            try:
+                return {'Location': str(data[api_settings.URL_FIELD_NAME])}
+            except (TypeError, KeyError):
+                return {}
 
     @action(methods=['POST'],detail=True, url_path="assign-to-do", url_name='assign-to-do')
     def assign_to_do(self,request,*args,**kwargs):
@@ -92,7 +112,21 @@ class TaskViewSet(viewsets.ViewSet, generics.UpdateAPIView,
 
         if task.status == 'COMPLETE' :
             raise PermissionDenied()
-        return super().update(request,partial=True)
+
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        try:
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+        except IntegrityError:
+            raise ValidationError(detail='completion date must not be less than creation date')
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+        return Response(serializer.data)
 
 
 
