@@ -3,6 +3,7 @@ Project xây dựng các API quản lý các công việc cần làm, viết b�
 I. Cách deploy source code:
 - Cài đặt môi trường venv cho project
 - Cài đặt các thư viện được liệt kê trong tập tin requipment.txt (sữ dụng lệnh pip install -r requirement.txt)
+
 II. Kết nối database.
 - Trong mysql tạo database tên todoprojectdb
 - Cần trỏ đường dẫn terminal vào trong thư mục todoproject để chạy server thông qua tập tin manage.py
