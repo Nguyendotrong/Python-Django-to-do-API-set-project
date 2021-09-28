@@ -23,8 +23,8 @@ class UserViewSet(viewsets.ViewSet, generics.ListAPIView,):
             return [permissions.AllowAny(),]
         return [permissions.IsAuthenticated(),]
 
-    @action(methods=['post'], detail=False, url_path='sign_up',
-            url_name='sign_up')
+    @action(methods=['POST'], detail=False, url_path='sign-up',
+            url_name='sign-up')
     def sign_up(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
