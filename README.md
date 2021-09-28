@@ -1,5 +1,6 @@
 # Python-Django-to-do-API-set-project
 Project xây dựng các API quản lý các công việc cần làm, viết bằng công nghệ Django Rest API.
+
 I. Cách deploy source code:
 - Cài đặt môi trường venv cho project
 - Cài đặt các thư viện được liệt kê trong tập tin requipment.txt (sữ dụng lệnh pip install -r requirement.txt)
