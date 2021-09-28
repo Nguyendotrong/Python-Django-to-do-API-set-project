@@ -90,27 +90,30 @@ class TaskViewSet(viewsets.ViewSet, generics.UpdateAPIView,
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
         task = self.get_object()
-        if int(request.data.get('user')) == request.user.pk or task.status== 'COMPLETE':
+        if int(request.data.get('user')) == request.user.pk or task.status== 1:
             raise PermissionDenied()
 
         task = self.get_object()
-        # task.user = user_id
-        # task.save()
         serializer = TaskCreateSerializer(task, data={'user':user_id}, partial=True)
         serializer.is_valid(raise_exception=True)
-        instance = serializer.save()
+        serializer.save()
 
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
         task = self.get_object()
 
+        #kiểm tra có cập nhật biến user hay không..
+        # ..nếu có thì kiểm tra ko cho phân task cho user đang đăng nhập
         if request.data.get('user') is not None:
-            user_id = int(request.data.get('user'))
-            if user_id == request.user.id:
-                raise PermissionDenied()
+            try:
+                user_id = int(request.data.get('user'))
+                if user_id == request.user.id:
+                    raise PermissionDenied()
+            except:
+                return Response(status=status.HTTP_404_NOT_FOUND)
 
-        if task.status == 'COMPLETE' :
+        if task.status == 1 :
             raise PermissionDenied()
 
         partial = kwargs.pop('partial', False)
