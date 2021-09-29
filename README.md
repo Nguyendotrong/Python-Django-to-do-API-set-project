@@ -1,5 +1,6 @@
 # Python-Django-to-do-API-set-project
 Project xây dựng các API quản lý các công việc cần làm, viết bằng công nghệ Django Rest API.
+(Đã băm mật khẩu trước khi lưu xuống Database) 
 
 # I. Cách deploy source code:
   - Cài đặt môi trường venv cho project
