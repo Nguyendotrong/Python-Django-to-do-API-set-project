@@ -13,7 +13,9 @@ Project xây dựng các API quản lý các công việc cần làm, viết b�
    -> Bây giờ ta có thể chạy project
 
 # III.  Danh các tiếp đầu ngữ url tương ứng cho các Api
-  ## 1.  /accounts/    (method="POST") 
+  ** Lưu ý**: Ngoại trừ API đăng ký user, các API còn lại phải chứng thực user khi thực thi (truyền Bearer token và chuỗi access token cho đối số Authorization) như sau:
+      Bearer "chuỗi access token" 
+  ## 1.  /accounts/    (method="GET") 
       - Lấy tất cả user.
   ## 2.  /accounts/sign-up/ (method="POST") 
       - Đăng ký user.
