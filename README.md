@@ -15,6 +15,8 @@ Project xây dựng các API quản lý các công việc cần làm, viết b�
 # III.  Danh các tiếp đầu ngữ url tương ứng cho các Api
   ** Lưu ý**: Ngoại trừ API đăng ký user, các API còn lại phải chứng thực user khi thực thi (truyền Bearer token và chuỗi access token cho đối số Authorization) như sau:
       Bearer "chuỗi access token" 
+      ![image](https://user-images.githubusercontent.com/52287665/135322157-ecb75f4c-8df8-455f-8145-a39a3f2a3caa.png)
+
   ## 1.  /accounts/    (method="GET") 
       - Lấy tất cả user.
   ## 2.  /accounts/sign-up/ (method="POST") 
