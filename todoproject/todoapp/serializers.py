@@ -12,17 +12,19 @@ class UserSerializer(ModelSerializer):
         extra_kwargs = {
             'password': {
                 'write_only': True,
-                'style': {'input_type': 'password'}
+                # 'style': {'input_type': 'password'}
             },
         }
 
-    def create(self, validated_data):
-
-        user = User(**validated_data)
-        user.set_password(user.password)
-        user.save()
-        return user
-
+    # def create(self, validated_data):
+    #
+    #     user = User(**validated_data)
+    #     # user = User.objects.create_user(**validated_data)
+    #     user.set_password(user.password)
+    #
+    #     user.save()
+    #     return user
+# pbkdf2_sha256$260000$kWtD7IZUFKZWIcWQGY0rJi$88OTgkzxoR6ZvwORE8OAWW2OIeDm1b/GI668/zDnLBk='
 
 class TaskSerializer(ModelSerializer):
     class Meta:

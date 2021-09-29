@@ -39,12 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'todoapp.apps.TodoappConfig',
     'rest_framework',
+    'rest_framework_simplejwt',
+    # 'oauth2_provider',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
     # 'PAGE_SIZE': '2',
     'DEFAULT_AUTHENTICATION_CLASSES': (
-    'rest_framework_simplejwt.authentication.JWTAuthentication',)
+    # 'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
 
 MIDDLEWARE = [
@@ -135,3 +139,4 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# AUTH_USER_MODEL = 'django.contrib.auth.models.User'

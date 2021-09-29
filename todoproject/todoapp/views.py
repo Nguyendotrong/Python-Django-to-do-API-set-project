@@ -23,17 +23,28 @@ class UserViewSet(viewsets.ViewSet, generics.ListAPIView,):
             return [permissions.AllowAny(),]
         return [permissions.IsAuthenticated(),]
 
+    # def create(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     instance = serializer.save()
+    #     instance = User.objects.get(username=request.data.get('username'))
+    #     instance.set_password(request.data.get('password'))
+    #     instance.save()
+    #     headers = self.get_success_headers(instance)
+    #
+    #     return Response(UserSerializer(instance).data, status=status.HTTP_201_CREATED,headers=headers )
+
     @action(methods=['POST'], detail=False, url_path='sign-up',
             url_name='sign-up')
     def sign_up(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
+        serializer.save()
+        instance = User.objects.get(username=request.data.get('username'))
+        instance.set_password(request.data.get('password'))
+        instance.save()
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-    def perform_create(self, serializer):
-        serializer.save()
 
     def get_success_headers(self, data):
         try:
