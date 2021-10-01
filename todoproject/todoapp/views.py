@@ -80,7 +80,8 @@ class TaskViewSet(viewsets.ViewSet, generics.UpdateAPIView,
 
         except IntegrityError:
             raise ValidationError(detail='completion date must not be less than creation date')
-
+        except ValueError:
+            raise  ValidationError(detail="user field must be interger")
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
