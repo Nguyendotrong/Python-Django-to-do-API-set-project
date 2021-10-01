@@ -80,8 +80,7 @@ class TaskViewSet(viewsets.ViewSet, generics.UpdateAPIView,
 
         except IntegrityError:
             raise ValidationError(detail='completion date must not be less than creation date')
-        except :
-            return Response(status=status.HTTP_404_NOT_FOUND)
+
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
