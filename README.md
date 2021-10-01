@@ -45,7 +45,7 @@ Project xây dựng các API quản lý các công việc cần làm, viết b�
      - Body: 
        + name: str                 (đối số bắt buộc)
        + description: str          (đối số bắt buộc)
-       + user: str                  (đối số bắt buộc)
+       + user: int                  (đối số bắt buộc)
        + date_of_completion: datetime, format(yyyy-MM-DD hh:mm:ss), Lưu ý: date_of_completion phải lớn hơn ngày tạo task(mặc định là ngày hiện tại)  (đối số bắt buộc)
         
   ##  6.  /tasks/{id}  (method="GET")  
